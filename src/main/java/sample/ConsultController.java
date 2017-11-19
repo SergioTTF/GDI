@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -61,12 +63,62 @@ public class ConsultController implements Initializable {
         });
 
         consultButton.setOnAction(event -> {
+            String CPF = consultCPF.getText();
+            Connection con;
+            ConnectionDatabase driverCon = new ConnectionDatabase();
+            con = driverCon.setConnection();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            datePicker.setValue(LOCAL_DATE("01-05-2016"));
-            choiceBox.setValue("M");
-            updateButton.setDisable(false);
-            deleteButton.setDisable(false);
+            if (con != null) {
+                Pessoa pessoa = new Pessoa();
+                try {
+                    String[] person = pessoa.consult(CPF);
+                    showPerson(person);
+                    updateButton.setDisable(false);
+                    deleteButton.setDisable(false);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Failed to make connection!");
+            }
+        });
+        updateButton.setOnAction(event -> {
+            String CPF = consultCPF.getText();
+            String name = personName.getText();
+            String sex = choiceBox.getValue().toString();
+            String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            Connection con;
+            ConnectionDatabase driverCon = new ConnectionDatabase();
+            con = driverCon.setConnection();
+
+            if (con != null) {
+                Pessoa pessoa = new Pessoa();
+                try {
+                    pessoa.update(name, CPF, date, sex.charAt(0));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Failed to make connection!");
+            }
+        });
+
+        deleteButton.setOnAction( event -> {
+            String CPF = consultCPF.getText();
+            Connection con;
+            ConnectionDatabase driverCon = new ConnectionDatabase();
+            con = driverCon.setConnection();
+
+            if (con != null) {
+                Pessoa pessoa = new Pessoa();
+                try {
+                    pessoa.remove(CPF);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Failed to make connection!");
+            }
         });
     }
 
@@ -74,5 +126,18 @@ public class ConsultController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
         return localDate;
+    }
+    public void showPerson(String[] person) {
+        Platform.runLater(() -> {
+            try {
+                personCPF.setText(person[1]);
+                personName.setText(person[2]);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                datePicker.setValue(LOCAL_DATE(person[3]));
+                choiceBox.setValue(person[4]);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
     }
 }

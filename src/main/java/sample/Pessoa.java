@@ -60,9 +60,9 @@ public class Pessoa {
             final String FIND = "SELECT * FROM Pessoa WHERE CPF = " + cpf_input;
             PreparedStatement stmt = this.con.prepareStatement(FIND);
             ResultSet result = stmt.executeQuery();
-            resultado = new String[4];
+            resultado = new String[5];
 
-            for(int i = 0; result.next(); i++) {
+            for(int i = 1; result.next(); i++) {
                 resultado[i] = result.getString(i); //Adiciona no array de acordo com o index da coluna
             }
         }
