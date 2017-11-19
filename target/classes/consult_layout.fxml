@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="179.0" layoutY="8.0" prefHeight="70.0" prefWidth="243.0" text="Consultar Paciente">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="87.0" layoutY="78.0" prefHeight="31.0" prefWidth="65.0" text="CPF:">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <TextField fx:id="consultCPF" layoutX="152.0" layoutY="80.0" prefHeight="27.0" prefWidth="191.0" />
+      <Button fx:id="consultButton" layoutX="377.0" layoutY="80.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="96.0" text="Consultar" />
+      <Label layoutX="84.0" layoutY="136.0" prefHeight="31.0" prefWidth="65.0" text="Nome:">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <TextField fx:id="personName" layoutX="195.0" layoutY="138.0" prefHeight="27.0" prefWidth="333.0" />
+      <Label layoutX="84.0" layoutY="172.0" prefHeight="31.0" prefWidth="65.0" text="CPF:">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <TextField fx:id="personCPF" editable="false" layoutX="195.0" layoutY="174.0" prefHeight="27.0" prefWidth="333.0" />
+      <Label layoutX="84.0" layoutY="214.0" prefHeight="31.0" prefWidth="192.0" text="Data de Nascimento:">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="datePicker" layoutX="328.0" layoutY="216.0" />
+      <Label layoutX="84.0" layoutY="255.0" prefHeight="31.0" prefWidth="65.0" text="Sexo:">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="choiceBox" layoutX="374.0" layoutY="257.0" prefHeight="27.0" prefWidth="76.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="M" />
+               <String fx:value="F" />
+            </FXCollections>
+         </items>
+      </ChoiceBox>
+      <Button fx:id="updateButton" disable="true" layoutX="174.0" layoutY="326.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="96.0" text="Atualizar" />
+      <Button fx:id="deleteButton" disable="true" layoutX="314.0" layoutY="326.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="96.0" text="Deletar" />
+      <Button fx:id="cancelButton" layoutX="28.0" layoutY="344.0" mnemonicParsing="false" text="Cancelar" />
+   </children>
+</AnchorPane>

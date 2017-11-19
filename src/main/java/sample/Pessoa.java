@@ -11,47 +11,81 @@ public class Pessoa {
     Connection con;
 
 
-    public void update(String name, String cpf, String date, char sexo) throws SQLException {
+    public void insert(String name, String cpf_input, String date, char sexo) throws SQLException {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
+        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        ResultSet resCheck = check.executeQuery();
 
+        if (resCheck == null) {
+            final String INSERIR = "INSERT INTO Pessoa (CPF, Nome, Data_Nascimento, Sexo) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = this.con.prepareStatement(INSERIR);
+            stmt.setString(2, name);
+            stmt.setString(1, cpf_input);
+            stmt.setString(3, date);
+            stmt.setString(4, String.valueOf(sexo));
+            stmt.executeUpdate();
+        }
 
         this.con.commit();
         this.con.close();
     }
 
-    public String[] consultar(String cpf_input) throws SQLException {
+    public void remove(String cpf_input) throws SQLException {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
-        final String FIND = "SELECT * FROM Pessoa WHERE CPF = " + cpf_input;
-        PreparedStatement stmt = this.con.prepareStatement(FIND);
-        ResultSet result = stmt.executeQuery();
-        String[] resultado = new String[4];
+        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        ResultSet resCheck = check.executeQuery();
 
-        for(int i = 0; result.next(); i++) {
-            resultado[i] = result.getString(i); //Adiciona no array de acordo com o index da coluna
+        if (resCheck == null) {
+            final String REMOVE = "DELETE FROM Pessoa WHERE CPF = " + cpf_input;
+            PreparedStatement stmt = this.con.prepareStatement(REMOVE);
+            stmt.executeUpdate();
         }
 
+        this.con.commit();
+        this.con.close();
+    }
+    public String[] consult(String cpf_input) throws SQLException {
+        ConnectionDatabase connectionBD = new ConnectionDatabase();
+        this.con = connectionBD.setConnection();
+
+        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        ResultSet resCheck = check.executeQuery();
+        String[] resultado = null;
+
+        if (resCheck == null) {
+            final String FIND = "SELECT * FROM Pessoa WHERE CPF = " + cpf_input;
+            PreparedStatement stmt = this.con.prepareStatement(FIND);
+            ResultSet result = stmt.executeQuery();
+            resultado = new String[4];
+
+            for(int i = 0; result.next(); i++) {
+                resultado[i] = result.getString(i); //Adiciona no array de acordo com o index da coluna
+            }
+        }
         this.con.commit();
         this.con.close();
         return resultado;
     }
 
-    public void insert(String name, String cpf, String date, char sexo) throws SQLException {
+    public void update(String name, String cpf_input, String date, char sexo) throws SQLException {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
-        final String INSERIR = "INSERT INTO Pessoa (CPF, Nome, Data_Nascimento, Sexo) VALUES (?, ?, ?, ?)";
-        PreparedStatement preparedStatement = this.con.prepareStatement(INSERIR);
-        preparedStatement.setString(2, name);
-        preparedStatement.setString(1, cpf);
-        preparedStatement.setString(3, date);
-        preparedStatement.setString(4, String.valueOf(sexo));
-        preparedStatement.executeUpdate();
+        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        ResultSet resCheck = check.executeQuery();
+
+        if (resCheck == null) {
+            final String UPDATER = "UPDATE Pessoa SET Nome = " + name + ", Data_Nascimento = " + date + ", Sexo = " + sexo + " WHERE CPF_Pessoa = " + cpf_input;
+            PreparedStatement stmt = this.con.prepareStatement(UPDATER);
+            stmt.executeUpdate();
+        }
 
         this.con.commit();
         this.con.close();
     }
+
 }
