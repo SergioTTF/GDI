@@ -15,7 +15,7 @@ public class Pessoa {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
-        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        PreparedStatement check = this.con.prepareStatement("SELECT * FROM Pessoa WHERE CPF = " + cpf_input);
         ResultSet resCheck = check.executeQuery();
 
         if (resCheck == null) {
@@ -36,7 +36,7 @@ public class Pessoa {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
-        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        PreparedStatement check = this.con.prepareStatement("SELECT * FROM Pessoa WHERE CPF = " + cpf_input);
         ResultSet resCheck = check.executeQuery();
 
         if (resCheck == null) {
@@ -52,7 +52,7 @@ public class Pessoa {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
-        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        PreparedStatement check = this.con.prepareStatement("SELECT * FROM Pessoa WHERE CPF = " + cpf_input);
         ResultSet resCheck = check.executeQuery();
         String[] resultado = null;
 
@@ -75,7 +75,7 @@ public class Pessoa {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
-        PreparedStatement check = this.con.prepareStatement("SELECT * WHERE CPF = " + cpf_input);
+        PreparedStatement check = this.con.prepareStatement("SELECT * FROM Pessoa WHERE CPF = " + cpf_input);
         ResultSet resCheck = check.executeQuery();
 
         if (resCheck == null) {
