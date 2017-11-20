@@ -50,35 +50,29 @@ public class Pessoa {
             final String REMOVE = "DELETE FROM Pessoa WHERE CPF = '" + cpf_input + "'";
             PreparedStatement stmt = this.con.prepareStatement(REMOVE);
             stmt.executeUpdate();
+
+            final String REMOVE2 = "DELETE FROM Paciente WHERE CPF_Paciente = " + cpf_input;
+            PreparedStatement stmt2 = this.con.prepareStatement(REMOVE2);
+            stmt2.executeUpdate();
         }
 
         this.con.commit();
         this.con.close();
     }
-
-    public String[] consult(String cpf_input) throws SQLException {
+    public Person consult(String cpf_input) throws SQLException {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
         final String CHECK = "SELECT * FROM Pessoa WHERE CPF = '" + cpf_input + "'";
         PreparedStatement check = this.con.prepareStatement(CHECK);
         ResultSet resCheck = check.executeQuery();
-        String[] resultado = null;
-
-        if (resCheck != null) {
-            final String FIND = "SELECT * FROM Pessoa WHERE CPF = '" + cpf_input + "'";
-            PreparedStatement stmt = this.con.prepareStatement(FIND);
-            ResultSet result = stmt.executeQuery();
-            resultado = new String[5];
-
-            for (int i = 1; result.next(); i++) {
-                resultado[i] = result.getString(i); //Adiciona no array de acordo com o index da coluna
-            }
-        }
+        resCheck.next();
+        Person resultado = new Person(resCheck.getString(1), resCheck.getString(2), resCheck.getDate(3), resCheck.getString(4));
         this.con.commit();
         this.con.close();
         return resultado;
     }
+
 
     public void update(String name, String cpf_input, String date, char sexo) throws SQLException {
         ConnectionDatabase connectionBD = new ConnectionDatabase();

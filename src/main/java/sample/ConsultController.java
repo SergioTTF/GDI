@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import static sample.InsertController.addTextLimiter;
@@ -71,7 +72,8 @@ public class ConsultController implements Initializable {
             if (con != null) {
                 Pessoa pessoa = new Pessoa();
                 try {
-                    String[] person = pessoa.consult(CPF);
+                    Person person = pessoa.consult(CPF);
+                    System.out.println(person.getData());
                     showPerson(person);
                     updateButton.setDisable(false);
                     deleteButton.setDisable(false);
@@ -123,18 +125,19 @@ public class ConsultController implements Initializable {
     }
 
     public static final LocalDate LOCAL_DATE (String dateString){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
         return localDate;
     }
-    public void showPerson(String[] person) {
+
+    public void showPerson(Person person) {
         Platform.runLater(() -> {
             try {
-                personCPF.setText(person[1]);
-                personName.setText(person[2]);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                datePicker.setValue(LOCAL_DATE(person[3]));
-                choiceBox.setValue(person[4]);
+
+                personCPF.setText(person.getCPF());
+                personName.setText(person.getNome());
+                datePicker.setValue(LOCAL_DATE(person.getData().toString()));
+                choiceBox.setValue(person.getSexo());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
