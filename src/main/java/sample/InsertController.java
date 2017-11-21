@@ -43,7 +43,7 @@ public class InsertController implements Initializable {
             String name = personName.getText();
             String CPF = personCPF.getText();
             String sex = choiceBox.getValue().toString();
-            String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            java.sql.Date date =java.sql.Date.valueOf(datePicker.getValue());
 
             Connection con;
             ConnectionDatabase driverCon = new ConnectionDatabase();
@@ -52,7 +52,7 @@ public class InsertController implements Initializable {
             if (con != null) {
                 Pessoa pessoa = new Pessoa();
                 try {
-                    pessoa.insert(name, CPF, date, sex.charAt(0));
+                    pessoa.insert(name, CPF, date, sex);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
