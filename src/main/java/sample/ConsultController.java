@@ -73,8 +73,9 @@ public class ConsultController implements Initializable {
                 Pessoa pessoa = new Pessoa();
                 try {
                     Person person = pessoa.consult(CPF);
-                    System.out.println(person.getData());
-                    showPerson(person);
+                    if (person != null) {
+                        showPerson(person);
+                    }
                     updateButton.setDisable(false);
                     deleteButton.setDisable(false);
                 } catch (SQLException e) {
@@ -88,7 +89,7 @@ public class ConsultController implements Initializable {
             String CPF = consultCPF.getText();
             String name = personName.getText();
             String sex = choiceBox.getValue().toString();
-            String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             Connection con;
             ConnectionDatabase driverCon = new ConnectionDatabase();
             con = driverCon.setConnection();

@@ -47,13 +47,13 @@ public class Pessoa {
         ResultSet resCheck = check.executeQuery();
 
         if (resCheck != null) {
+            final String REMOVE2 = "DELETE FROM Paciente WHERE CPF_Paciente = '" + cpf_input + "'";
+            PreparedStatement stmt2 = this.con.prepareStatement(REMOVE2);
+            stmt2.executeUpdate();
+
             final String REMOVE = "DELETE FROM Pessoa WHERE CPF = '" + cpf_input + "'";
             PreparedStatement stmt = this.con.prepareStatement(REMOVE);
             stmt.executeUpdate();
-
-            final String REMOVE2 = "DELETE FROM Paciente WHERE CPF_Paciente = " + cpf_input;
-            PreparedStatement stmt2 = this.con.prepareStatement(REMOVE2);
-            stmt2.executeUpdate();
         }
 
         this.con.commit();
@@ -66,11 +66,19 @@ public class Pessoa {
         final String CHECK = "SELECT * FROM Pessoa WHERE CPF = '" + cpf_input + "'";
         PreparedStatement check = this.con.prepareStatement(CHECK);
         ResultSet resCheck = check.executeQuery();
+        boolean nonempty = resCheck.isAfterLast();
         resCheck.next();
-        Person resultado = new Person(resCheck.getString(1), resCheck.getString(2), resCheck.getDate(3), resCheck.getString(4));
-        this.con.commit();
-        this.con.close();
-        return resultado;
+
+        if (nonempty) {
+            String cpf_found = resCheck.getString(2);
+            this.con.commit();
+            this.con.close();
+            return new Person(resCheck.getString(1), cpf_found, resCheck.getDate(3), resCheck.getString(4));
+        } else {
+            this.con.commit();
+            this.con.close();
+            return null;
+        }
     }
 
 
@@ -83,7 +91,7 @@ public class Pessoa {
         ResultSet resCheck = check.executeQuery();
 
         if (resCheck != null) {
-            final String UPDATER = "UPDATE Pessoa SET Nome = '" + name + "', Data_Nascimento = '" + date + "', Sexo = '" + sexo + "' WHERE CPF_Pessoa = '" + cpf_input + "'";
+            final String UPDATER = "UPDATE Pessoa SET Nome = '" + name + "', Data_Nascimento = '" + date + "', Sexo = '" + sexo + "' WHERE CPF = '" + cpf_input + "'";
             PreparedStatement stmt = this.con.prepareStatement(UPDATER);
             stmt.executeUpdate();
         }
