@@ -69,35 +69,19 @@ public class Pessoa {
         final String CHECK = "SELECT * FROM Pessoa WHERE CPF = '" + cpf_input + "'";
         PreparedStatement check = this.con.prepareStatement(CHECK);
         ResultSet resCheck = check.executeQuery();
-        resCheck.next();
-        Person resultado = new Person(resCheck.getString(1), resCheck.getString(2), resCheck.getDate(3), resCheck.getString(4));
+        Person resultado = null;
+        boolean resCheckResult = resCheck.next();
+
+        if (resCheckResult) {
+            resultado = new Person(resCheck.getString(1), resCheck.getString(2), resCheck.getDate(3), resCheck.getString(4));
+        }
         this.con.commit();
         this.con.close();
         return resultado;
-
-        /*final String CHECK = "SELECT * FROM Pessoa WHERE CPF = '" + cpf_input + "'";
-        PreparedStatement check = this.con.prepareStatement(CHECK);
-        ResultSet resCheck = check.executeQuery();
-        boolean nonempty = resCheck.isAfterLast();
-        System.out.println(nonempty);
-        resCheck.next();
-
-        if (nonempty) {
-            System.out.println("viu que existe paciente");
-            String cpf_found = resCheck.getString(2);
-            this.con.commit();
-            this.con.close();
-            return new Person(resCheck.getString(1), cpf_found, resCheck.getDate(3), resCheck.getString(4));
-        } else {
-            System.out.println("n existe paciente");
-            this.con.commit();
-            this.con.close();
-            return null;
-        }*/
     }
 
 
-    public void update(String name, String cpf_input, String date, char sexo) throws SQLException {
+    public void update(String name, String cpf_input, java.sql.Date date, String sexo) throws SQLException {
         ConnectionDatabase connectionBD = new ConnectionDatabase();
         this.con = connectionBD.setConnection();
 
@@ -108,6 +92,7 @@ public class Pessoa {
         if (resCheck != null) {
             final String UPDATER = "UPDATE Pessoa SET Nome = '" + name + "', Data_Nascimento = '" + date + "', Sexo = '" + sexo + "' WHERE CPF = '" + cpf_input + "'";
             PreparedStatement stmt = this.con.prepareStatement(UPDATER);
+
             stmt.executeUpdate();
         }
 

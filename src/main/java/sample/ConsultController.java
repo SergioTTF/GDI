@@ -89,7 +89,8 @@ public class ConsultController implements Initializable {
             String CPF = consultCPF.getText();
             String name = personName.getText();
             String sex = choiceBox.getValue().toString();
-            String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            java.sql.Date date = java.sql.Date.valueOf(datePicker.getValue());
+
             Connection con;
             ConnectionDatabase driverCon = new ConnectionDatabase();
             con = driverCon.setConnection();
@@ -97,7 +98,7 @@ public class ConsultController implements Initializable {
             if (con != null) {
                 Pessoa pessoa = new Pessoa();
                 try {
-                    pessoa.update(name, CPF, date, sex.charAt(0));
+                    pessoa.update(name, CPF, date, sex);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
