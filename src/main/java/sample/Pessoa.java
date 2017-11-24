@@ -90,8 +90,9 @@ public class Pessoa {
         ResultSet resCheck = check.executeQuery();
 
         if (resCheck != null) {
-            final String UPDATER = "UPDATE Pessoa SET Nome = '" + name + "', Data_Nascimento = '" + date + "', Sexo = '" + sexo + "' WHERE CPF = '" + cpf_input + "'";
+            final String UPDATER = "UPDATE Pessoa SET Nome = '" + name + "', Data_Nascimento = ?, Sexo = '" + sexo + "' WHERE CPF = '" + cpf_input + "'";
             PreparedStatement stmt = this.con.prepareStatement(UPDATER);
+            stmt.setDate(1, date);
 
             stmt.executeUpdate();
         }
